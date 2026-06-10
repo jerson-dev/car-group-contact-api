@@ -17,10 +17,10 @@ public class ContactosDuplicateTests : IClassFixture<ContactosApiFactory>
     public async Task PostContacto_TelefonoDuplicado_Retorna409()
     {
         var request = new CrearContactoRequest { Nombre = "Juan Perez", Telefono = "123456789" };
-        await _client.PostAsJsonAsync("/api/v1/contactos", request);
+        await _client.PostAsJsonAsync("/api/contactos", request);
 
         var duplicate = new CrearContactoRequest { Nombre = "Otro", Telefono = "123456789" };
-        var response = await _client.PostAsJsonAsync("/api/v1/contactos", duplicate);
+        var response = await _client.PostAsJsonAsync("/api/contactos", duplicate);
 
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
@@ -32,10 +32,10 @@ public class ContactosDuplicateTests : IClassFixture<ContactosApiFactory>
     public async Task PostContacto_TelefonoDuplicadoConTrim_Retorna409()
     {
         var request = new CrearContactoRequest { Nombre = "Ana", Telefono = "987654321" };
-        await _client.PostAsJsonAsync("/api/v1/contactos", request);
+        await _client.PostAsJsonAsync("/api/contactos", request);
 
         var duplicate = new CrearContactoRequest { Nombre = "Bob", Telefono = " 987654321 " };
-        var response = await _client.PostAsJsonAsync("/api/v1/contactos", duplicate);
+        var response = await _client.PostAsJsonAsync("/api/contactos", duplicate);
 
         Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
     }

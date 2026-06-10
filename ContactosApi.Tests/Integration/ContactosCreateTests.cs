@@ -19,7 +19,7 @@ public class ContactosCreateTests : IClassFixture<ContactosApiFactory>
     {
         var request = new CrearContactoRequest { Nombre = "Juan Perez", Telefono = "123456789" };
 
-        var response = await _client.PostAsJsonAsync("/api/v1/contactos", request);
+        var response = await _client.PostAsJsonAsync("/api/contactos", request);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         var contacto = await response.Content.ReadFromJsonAsync<Contacto>();
@@ -34,7 +34,7 @@ public class ContactosCreateTests : IClassFixture<ContactosApiFactory>
     {
         var request = new CrearContactoRequest { Nombre = "", Telefono = "123" };
 
-        var response = await _client.PostAsJsonAsync("/api/v1/contactos", request);
+        var response = await _client.PostAsJsonAsync("/api/contactos", request);
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();

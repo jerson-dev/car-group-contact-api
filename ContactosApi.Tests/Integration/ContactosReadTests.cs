@@ -17,7 +17,7 @@ public class ContactosReadTests : IClassFixture<ContactosApiFactory>
     [Fact]
     public async Task GetContactos_ListaVacia_Retorna200()
     {
-        var response = await _client.GetAsync("/api/v1/contactos");
+        var response = await _client.GetAsync("/api/contactos");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var contactos = await response.Content.ReadFromJsonAsync<List<Contacto>>();
@@ -28,7 +28,7 @@ public class ContactosReadTests : IClassFixture<ContactosApiFactory>
     [Fact]
     public async Task GetContactoPorId_NoExiste_Retorna404()
     {
-        var response = await _client.GetAsync("/api/v1/contactos/999");
+        var response = await _client.GetAsync("/api/contactos/999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
