@@ -31,13 +31,13 @@ cd backend
 dotnet test
 ```
 
-## Endpoints
+## Endpoints (v1)
 
 | Método | Ruta | Descripción | Códigos |
 |--------|------|-------------|---------|
-| GET | `/api/contactos` | Listar contactos | 200 |
-| GET | `/api/contactos/{id}` | Obtener por ID | 200, 404 |
-| POST | `/api/contactos` | Crear contacto | 201, 400, 409 |
+| GET | `/api/v1/contactos` | Listar contactos | 200 |
+| GET | `/api/v1/contactos/{id}` | Obtener por ID | 200, 404 |
+| POST | `/api/v1/contactos` | Crear contacto | 201, 400, 409 |
 
 ### Ejemplo POST
 
@@ -61,10 +61,12 @@ dotnet test
 | Decisión | Justificación |
 |----------|---------------|
 | .NET 8 | LTS actual, cumple requisito .NET 6+ |
-| Controller → Service → Repository | Alineado con constitución (separación de responsabilidades) |
+| Controller → Service → Repository | Alineado con separación de responsabilidades |
 | `ConcurrentDictionary` + lock en creación | Thread-safe para lecturas concurrentes y creación atómica |
-| Excepciones de dominio | Mapeo claro a códigos HTTP sin over-engineering |
-| Sin base de datos | Requisito explícito de la prueba técnica |
+| `Result<T>` en creación | Validación y duplicados sin excepciones en flujo normal |
+| `ILogger<T>` estructurado | Trazabilidad de operaciones y errores sin dependencias extra |
+| `ErrorHandlingMiddleware` | Respuestas 500 uniformes sin exponer stack traces |
+| Versionado con `Asp.Versioning.Mvc` 8.x | Rutas `/api/v1/` preparadas para evolución de la API |
 | xUnit + Moq + WebApplicationFactory | Estándar .NET para unit e integration tests |
 
 ## Estructura
@@ -74,15 +76,10 @@ backend/
 ├── ContactosApi/
 │   ├── Controllers/     # Solo HTTP
 │   ├── Services/        # Lógica de negocio
-│   ├── Domain/          # Entidades y repositorio
+│   ├── Domain/          # Entidades, Result y repositorio
+│   ├── Middleware/      # Manejo global de errores
 │   └── Models/          # DTOs
 └── ContactosApi.Tests/
     ├── Unit/
     └── Integration/
 ```
-
-## Documentación adicional
-
-- [Spec](../specs/001-api-contactos-backend/spec.md)
-- [Quickstart](../specs/001-api-contactos-backend/quickstart.md)
-- [OpenAPI](../specs/001-api-contactos-backend/contracts/openapi.yaml)

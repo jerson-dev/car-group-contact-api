@@ -1,5 +1,6 @@
 using ContactosApi.Domain;
 using ContactosApi.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace ContactosApi.Tests.Unit;
@@ -11,7 +12,7 @@ public class ContactoServiceReadTests
     {
         var repository = new Mock<IContactoRepository>();
         repository.Setup(r => r.ObtenerTodos()).Returns(Array.Empty<Contacto>());
-        var service = new ContactoService(repository.Object);
+        var service = new ContactoService(repository.Object, NullLogger<ContactoService>.Instance);
 
         var result = service.ObtenerTodos();
 
@@ -23,7 +24,7 @@ public class ContactoServiceReadTests
     {
         var repository = new Mock<IContactoRepository>();
         repository.Setup(r => r.ObtenerPorId(999)).Returns((Contacto?)null);
-        var service = new ContactoService(repository.Object);
+        var service = new ContactoService(repository.Object, NullLogger<ContactoService>.Instance);
 
         var result = service.ObtenerPorId(999);
 

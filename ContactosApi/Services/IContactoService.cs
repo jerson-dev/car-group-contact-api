@@ -9,5 +9,5 @@ public interface IContactoService
 
     Contacto? ObtenerPorId(int id);
 
-    Contacto Crear(CrearContactoRequest request);
+    Result<Contacto> Crear(CrearContactoRequest request);
 }
